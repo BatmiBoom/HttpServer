@@ -7,15 +7,16 @@ type Route struct {
 	Handler http.Handler
 }
 
-func GetRoutes() []Route {
-	routes := make([]Route, 1)
-
+func GetRoutes() [1]Route {
 	template_path := http.Dir("../template")
 	root_route := Route{
 		Route:   "/",
 		Handler: http.FileServer(template_path),
 	}
 
-	routes = append(routes, root_route)
+	routes := [1]Route{
+		root_route,
+	}
+
 	return routes
 }
