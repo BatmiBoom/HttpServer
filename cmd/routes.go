@@ -8,7 +8,7 @@ type Route struct {
 }
 
 func GetRoutes() [1]Route {
-	template_path := http.Dir("../template")
+	template_path := http.Dir("./template")
 	root_route := Route{
 		Route:   "/",
 		Handler: http.FileServer(template_path),
