@@ -7,20 +7,15 @@ type Route struct {
 	Handler http.HandlerFunc
 }
 
-func GetRoutes() [3]Route {
+func GetRoutes() [2]Route {
 	template_path := http.Dir("./template")
 	root_route := Route{
-		Route:   "/",
-		Handler: http.FileServer(template_path).ServeHTTP,
-	}
-
-	assets_route := Route{
-		Route:   "peto/",
-		Handler: http.FileServer(template_path).ServeHTTP,
+		Route:   "/app/*",
+		Handler: http.StripPrefix("/app", http.FileServer(template_path)).ServeHTTP,
 	}
 
 	readiness_route := Route{
-		Route: "healthz/",
+		Route: "/healthz/",
 		Handler: func(w http.ResponseWriter, r *http.Request) {
 			headers := w.Header()
 			headers.Add("Content-Type", "text/plain; charset=utf-8")
@@ -29,9 +24,8 @@ func GetRoutes() [3]Route {
 		},
 	}
 
-	routes := [3]Route{
+	routes := [2]Route{
 		root_route,
-		assets_route,
 		readiness_route,
 	}
 
