@@ -9,7 +9,7 @@ import (
 )
 
 // Start the server on port 8080
-func Start(routes [2]routes.Route) {
+func Start(routes [3]routes.Route) {
 	const port = "8080"
 
 	mux := http.NewServeMux()
@@ -20,13 +20,13 @@ func Start(routes [2]routes.Route) {
 		Handler: mux,
 	}
 
-	log.Printf("Serving files from %s on port: %s\n", "./template/", port)
+	log.Printf("Listening on port : ", port)
 	log.Fatal(http_server.ListenAndServe())
 }
 
-func setupRoutes(server *http.ServeMux, routes [2]routes.Route) {
+func setupRoutes(server *http.ServeMux, routes [3]routes.Route) {
 	for _, route := range routes {
 		log.Print(route)
-		server.Handle(route.Route, route.Handler)
+		server.HandleFunc(route.Route, route.Handler)
 	}
 }
