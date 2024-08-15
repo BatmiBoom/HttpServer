@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/BatmiBoom/http_server_go/cmd/handlers"
-	"github.com/BatmiBoom/http_server_go/cmd/middleware"
 )
 
 type Route struct {
@@ -13,29 +12,29 @@ type Route struct {
 }
 
 func GetRoutes() [4]Route {
-	apiConfig := middleware.ApiConfig{
+	server := handlers.Server{
 		FileServerHits: 0,
 	}
 
 	template_path := http.Dir("./template")
 	root_route := Route{
 		Route:   "/app/*",
-		Handler: apiConfig.Metrics(http.StripPrefix("/app", http.FileServer(template_path)).ServeHTTP),
+		Handler: server.CountRequest(http.StripPrefix("/app", http.FileServer(template_path)).ServeHTTP),
 	}
 
 	readiness_route := Route{
 		Route:   "/healthz/",
-		Handler: apiConfig.Metrics(handlers.Healthz()),
+		Handler: server.CountRequest(server.Healthz),
 	}
 
 	metrics_route := Route{
 		Route:   "/metrics/",
-		Handler: handlers.Metrics(apiConfig),
+		Handler: server.Metrics,
 	}
 
 	reset_metrics_route := Route{
 		Route:   "/reset/",
-		Handler: handlers.ResetMetrics(apiConfig),
+		Handler: server.ResetMetrics,
 	}
 
 	routes := [4]Route{

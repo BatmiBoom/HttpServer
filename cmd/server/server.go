@@ -8,6 +8,7 @@ import (
 	routes "github.com/BatmiBoom/http_server_go/cmd"
 )
 
+
 // Start the server on port 8080
 func Start(routes [4]routes.Route) {
 	const port = "8080"
@@ -20,7 +21,7 @@ func Start(routes [4]routes.Route) {
 		Handler: mux,
 	}
 
-	log.Printf("Listening on port : ", port)
+	log.Printf("Listening on port : %s", port)
 	log.Fatal(http_server.ListenAndServe())
 }
 
