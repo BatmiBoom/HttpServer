@@ -8,9 +8,8 @@ import (
 	routes "github.com/BatmiBoom/http_server_go/cmd"
 )
 
-
 // Start the server on port 8080
-func Start(routes [4]routes.Route) {
+func Start(routes routes.Routes) {
 	const port = "8080"
 
 	mux := http.NewServeMux()
@@ -25,8 +24,8 @@ func Start(routes [4]routes.Route) {
 	log.Fatal(http_server.ListenAndServe())
 }
 
-func setupRoutes(server *http.ServeMux, routes [4]routes.Route) {
+func setupRoutes(server *http.ServeMux, routes routes.Routes) {
 	for _, route := range routes {
-		server.HandleFunc(route.Route, route.Handler)
+		server.HandleFunc(route.Methods+" "+route.Route, route.Handler)
 	}
 }
